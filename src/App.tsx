@@ -7,6 +7,7 @@ import ReviewList from "./components/ReviewList";
 import ReviewForm from "./components/ReviewForm";
 import ErrorBoundary from "./components/ErrorBoundary";
 import RoulettePage from "./components/RoulettePage";
+import ReviewDetail from "./components/ReviewDetail";
 
 const App: React.FC = () => {
   const [user] = useAuthState(auth);
@@ -43,44 +44,28 @@ const App: React.FC = () => {
               </li>
               <li>
                 <Link to="/roulette" className="text-blue-500">
-                  Roulette Review
+                  Roulette
                 </Link>
               </li>
             </ul>
-            <div>
-              {user ? (
-                <>
-                  <span className="mr-4">Welcome, {user.displayName}!</span>
-                  <button
-                    onClick={handleSignOut}
-                    className="bg-red-500 text-white px-4 py-2 rounded"
-                  >
-                    Sign Out
-                  </button>
-                </>
-              ) : (
-                <button
-                  onClick={handleSignIn}
-                  className="bg-blue-500 text-white px-4 py-2 rounded"
-                >
-                  Sign In with Google
-                </button>
-              )}
-            </div>
+            {user ? (
+              <button onClick={handleSignOut} className="text-red-500">
+                Sign Out
+              </button>
+            ) : (
+              <button onClick={handleSignIn} className="text-blue-500">
+                Sign In
+              </button>
+            )}
           </nav>
-
           <Routes>
-            <Route
-              path="/"
-              element={
-                <ReviewList key={refreshList ? "refresh" : "no-refresh"} />
-              }
-            />
+            <Route path="/" element={<ReviewList />} />
             <Route
               path="/add"
               element={<ReviewForm onSubmit={handleFormSubmit} />}
             />
             <Route path="/roulette" element={<RoulettePage />} />
+            <Route path="/review/:id" element={<ReviewDetail />} />
           </Routes>
         </div>
       </ErrorBoundary>
