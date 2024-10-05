@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Review } from "../types/Review";
 import { updateReview, uploadImage } from "../services/ReviewService";
+import { getAuth } from "firebase/auth";
 
 interface EditReviewProps {
   review: Review;
@@ -13,7 +14,9 @@ const EditReview: React.FC<EditReviewProps> = ({
   onSave,
   onCancel,
 }) => {
-  const [formData, setFormData] = useState<Omit<Review, "id">>({
+  const [formData, setFormData] = useState<
+    Omit<Review, "id" | "userId" | "reviewerName">
+  >({
     name: "",
     address: "",
     description: "",
@@ -37,7 +40,10 @@ const EditReview: React.FC<EditReviewProps> = ({
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "rating" ? parseFloat(value) : value,
+    }));
   };
 
   const handleImageUpload = async (
@@ -54,9 +60,20 @@ const EditReview: React.FC<EditReviewProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (review.id) {
-      await updateReview(review.id, formData);
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (review.id && user) {
+      const updatedReview: Review = {
+        ...formData,
+        id: review.id,
+        userId: user.uid,
+        reviewerName: user.displayName || "Anonymous",
+      };
+      await updateReview(review.id, updatedReview);
       onSave();
+    } else {
+      console.error("User not logged in or review ID is missing");
     }
   };
 

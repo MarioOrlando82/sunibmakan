@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Review } from "../types/Review";
 import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -23,7 +23,38 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
   const [rating, setRating] = useState(review?.rating || 0);
   const [restaurantImage, setRestaurantImage] = useState<File | null>(null);
   const [menuImage, setMenuImage] = useState<File | null>(null);
+  const [restaurantImagePreview, setRestaurantImagePreview] = useState<
+    string | null
+  >(review?.restaurantImage || null);
+  const [menuImagePreview, setMenuImagePreview] = useState<string | null>(
+    review?.menuImage || null
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (review) {
+      setRestaurantImagePreview(review.restaurantImage || null);
+      setMenuImagePreview(review.menuImage || null);
+    }
+  }, [review]);
+
+  const handleImageChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setImage: React.Dispatch<React.SetStateAction<File | null>>,
+    setPreview: React.Dispatch<React.SetStateAction<string | null>>
+  ) => {
+    const file = e.target.files?.[0] || null;
+    setImage(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setPreview(null);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,13 +64,15 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
     }
     setIsSubmitting(true);
 
-    const reviewData: Partial<Review> = {
+    const reviewData: Omit<Review, "id"> = {
       name,
       address,
       description,
       rating,
       reviewerName: user.displayName || "Anonymous",
-      reviewerUid: user.uid,
+      userId: user.uid,
+      restaurantImage: restaurantImagePreview || "",
+      menuImage: menuImagePreview || "",
     };
 
     try {
@@ -48,7 +81,7 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
       if (id) {
         await updateReview(id, reviewData);
       } else {
-        id = await addReview(reviewData as Review);
+        id = await addReview(reviewData);
       }
 
       if (restaurantImage) {
@@ -56,7 +89,10 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
           restaurantImage,
           `restaurants/${id}/restaurant-image`
         );
-        await updateReview(id, { restaurantImage: restaurantImageUrl });
+        await updateReview(id, {
+          ...reviewData,
+          restaurantImage: restaurantImageUrl,
+        });
       }
 
       if (menuImage) {
@@ -64,7 +100,7 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
           menuImage,
           `restaurants/${id}/menu-image`
         );
-        await updateReview(id, { menuImage: menuImageUrl });
+        await updateReview(id, { ...reviewData, menuImage: menuImageUrl });
       }
 
       onSubmit();
@@ -155,10 +191,19 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
         <input
           type="file"
           id="restaurantImage"
-          onChange={(e) => setRestaurantImage(e.target.files?.[0] || null)}
+          onChange={(e) =>
+            handleImageChange(e, setRestaurantImage, setRestaurantImagePreview)
+          }
           accept="image/*"
           className="mt-1 block w-full"
         />
+        {restaurantImagePreview && (
+          <img
+            src={restaurantImagePreview}
+            alt="Restaurant preview"
+            className="mt-2 w-full h-48 object-cover"
+          />
+        )}
       </div>
       <div>
         <label
@@ -170,10 +215,19 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
         <input
           type="file"
           id="menuImage"
-          onChange={(e) => setMenuImage(e.target.files?.[0] || null)}
+          onChange={(e) =>
+            handleImageChange(e, setMenuImage, setMenuImagePreview)
+          }
           accept="image/*"
           className="mt-1 block w-full"
         />
+        {menuImagePreview && (
+          <img
+            src={menuImagePreview}
+            alt="Menu preview"
+            className="mt-2 w-full h-48 object-cover"
+          />
+        )}
       </div>
       <button
         type="submit"

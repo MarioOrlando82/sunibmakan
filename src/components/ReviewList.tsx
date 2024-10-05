@@ -2,13 +2,20 @@ import React, { useEffect, useState } from "react";
 import { Review } from "../types/Review";
 import { getReviews, deleteReview } from "../services/ReviewService";
 import EditReview from "./EditReview";
+import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 
 const ReviewList: React.FC = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [editingReview, setEditingReview] = useState<Review | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   useEffect(() => {
     fetchReviews();
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+    });
+    return () => unsubscribe();
   }, []);
 
   const fetchReviews = async () => {
@@ -17,12 +24,23 @@ const ReviewList: React.FC = () => {
   };
 
   const handleDelete = async (id: string) => {
-    await deleteReview(id);
-    fetchReviews();
+    if (
+      currentUser &&
+      currentUser.uid === reviews.find((r) => r.id === id)?.userId
+    ) {
+      await deleteReview(id);
+      fetchReviews();
+    } else {
+      alert("You don't have permission to delete this review.");
+    }
   };
 
   const handleEdit = (review: Review) => {
-    setEditingReview(review);
+    if (currentUser && currentUser.uid === review.userId) {
+      setEditingReview(review);
+    } else {
+      alert("You don't have permission to edit this review.");
+    }
   };
 
   const handleSave = async () => {
@@ -81,18 +99,22 @@ const ReviewList: React.FC = () => {
                     View Menu
                   </button>
                 )}
-                <button
-                  onClick={() => handleEdit(review)}
-                  className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors w-full"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => review.id && handleDelete(review.id)}
-                  className="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors w-full"
-                >
-                  Delete
-                </button>
+                {currentUser && currentUser.uid === review.userId && (
+                  <>
+                    <button
+                      onClick={() => handleEdit(review)}
+                      className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors w-full"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => review.id && handleDelete(review.id)}
+                      className="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors w-full"
+                    >
+                      Delete
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           ))}
