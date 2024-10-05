@@ -52,6 +52,20 @@ const ReviewList: React.FC = () => {
     setEditingReview(null);
   };
 
+  const generateStars = (rating: number) => {
+    const fullStars = Math.floor(rating);
+    const halfStars = rating % 1 >= 0.5 ? 1 : 0;
+    const emptyStars = 5 - fullStars - halfStars;
+
+    return (
+      <>
+        {"★".repeat(fullStars)}
+        {"½".repeat(halfStars)}
+        {"☆".repeat(emptyStars)}
+      </>
+    );
+  };
+
   return (
     <div className="container mx-auto mt-8">
       <h2 className="text-2xl font-bold mb-4">Review List</h2>
@@ -82,10 +96,11 @@ const ReviewList: React.FC = () => {
                   {review.description}
                 </p>
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-yellow-500">
-                    {"★".repeat(Math.round(review.rating))}
-                    {"☆".repeat(5 - Math.round(review.rating))}
-                  </span>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-yellow-500">
+                      {generateStars(review.rating)}
+                    </span>
+                  </div>
                   <span>{Number(review.rating).toFixed(1)}</span>
                 </div>
                 <p className="text-sm text-gray-600 mb-2">
