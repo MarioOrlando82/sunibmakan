@@ -111,23 +111,28 @@ const ReviewList: React.FC = () => {
 
   return (
     <div className="container mx-auto mt-8">
-      <h2 className="text-2xl font-bold mb-4">Review List</h2>
-      <input
-        type="text"
-        placeholder="Search reviews by name"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="border border-gray-300 rounded p-2 mb-4 w-full"
-      />
-      <select
-        value={filterOption}
-        onChange={(e) => setFilterOption(e.target.value)}
-        className="border border-gray-300 rounded p-2 mb-4"
-      >
-        <option value="all">All Reviews</option>
-        <option value="most-liked">Most Liked</option>
-        <option value="least-liked">Least Liked</option>
-      </select>
+      {!editingReview && (
+        <>
+          <h2 className="text-2xl font-bold mb-4">Review List</h2>
+          <input
+            type="text"
+            placeholder="Search reviews by name"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="border border-gray-300 rounded p-2 mb-4 w-full"
+          />
+          <select
+            value={filterOption}
+            onChange={(e) => setFilterOption(e.target.value)}
+            className="border border-gray-300 rounded p-2 mb-4"
+          >
+            <option value="all">All Reviews</option>
+            <option value="most-liked">Most Liked</option>
+            <option value="least-liked">Least Liked</option>
+          </select>
+        </>
+      )}
+
       {editingReview ? (
         <EditReview
           review={editingReview}
