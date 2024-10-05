@@ -8,4 +8,8 @@ export interface Review {
   userId: string;
   restaurantImage: string;
   menuImage: string;
+  likes: number;
+  dislikes: number;
+  likedBy: string[];
+  dislikedBy: string[];
 }

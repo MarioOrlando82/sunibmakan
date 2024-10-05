@@ -1,8 +1,11 @@
-// src/components/ReviewList.tsx
-
 import React, { useEffect, useState } from "react";
 import { Review } from "../types/Review";
-import { getReviews, deleteReview } from "../services/ReviewService";
+import {
+  getReviews,
+  deleteReview,
+  likeReview,
+  dislikeReview,
+} from "../services/ReviewService";
 import EditReview from "./EditReview";
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 
@@ -10,7 +13,7 @@ const ReviewList: React.FC = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [editingReview, setEditingReview] = useState<Review | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [searchTerm, setSearchTerm] = useState<string>(""); // State for the search term
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
     fetchReviews();
@@ -51,8 +54,22 @@ const ReviewList: React.FC = () => {
     setEditingReview(null);
   };
 
-  const handleCancel = () => {
-    setEditingReview(null);
+  const handleLike = async (id: string) => {
+    try {
+      await likeReview(id);
+      fetchReviews();
+    } catch (error: any) {
+      alert(error.message || "An error occurred while liking the review.");
+    }
+  };
+
+  const handleDislike = async (id: string) => {
+    try {
+      await dislikeReview(id);
+      fetchReviews();
+    } catch (error: any) {
+      alert(error.message || "An error occurred while disliking the review.");
+    }
   };
 
   const generateStars = (rating: number) => {
@@ -69,7 +86,6 @@ const ReviewList: React.FC = () => {
     );
   };
 
-  // Filter reviews based on search term
   const filteredReviews = reviews.filter((review) =>
     review.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -88,64 +104,80 @@ const ReviewList: React.FC = () => {
         <EditReview
           review={editingReview}
           onSave={handleSave}
-          onCancel={handleCancel}
+          onCancel={() => setEditingReview(null)}
         />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredReviews.map((review) => (
             <div
               key={review.id}
-              className="bg-white shadow rounded-lg overflow-hidden"
+              className="bg-white shadow rounded-lg overflow-hidden p-4"
             >
               {review.restaurantImage && (
                 <img
                   src={review.restaurantImage}
                   alt={review.name}
-                  className="w-full h-48 object-cover"
+                  className="w-full h-48 object-cover mb-4"
                 />
               )}
-              <div className="p-4">
-                <h3 className="text-xl font-semibold mb-2">{review.name}</h3>
-                <p className="text-gray-600 mb-2">{review.address}</p>
-                <p className="text-sm text-gray-500 mb-2">
-                  {review.description}
-                </p>
-                <div className="flex justify-between items-center mb-2">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-yellow-500">
-                      {generateStars(review.rating)}
-                    </span>
-                  </div>
-                  <span>{Number(review.rating).toFixed(1)}</span>
-                </div>
-                <p className="text-sm text-gray-600 mb-2">
-                  Reviewed by: {review.reviewerName || "Anonymous"}
-                </p>
-                {review.menuImage && (
-                  <button
-                    onClick={() => window.open(review.menuImage, "_blank")}
-                    className="text-blue-500 underline text-sm mb-2"
-                  >
-                    View Menu
-                  </button>
-                )}
-                {currentUser && currentUser.uid === review.userId && (
-                  <>
-                    <button
-                      onClick={() => handleEdit(review)}
-                      className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors w-full"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => review.id && handleDelete(review.id)}
-                      className="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors w-full"
-                    >
-                      Delete
-                    </button>
-                  </>
-                )}
+              <h3 className="text-xl font-semibold mb-2">{review.name}</h3>
+              <p className="text-gray-600 mb-2">{review.address}</p>
+              <p className="text-sm text-gray-500 mb-2">{review.description}</p>
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-yellow-500">
+                  {generateStars(review.rating)}
+                </span>
+                <span>{Number(review.rating).toFixed(1)}</span>
               </div>
+              <p className="text-sm text-gray-600 mb-2">
+                Reviewed by: {review.reviewerName || "Anonymous"}
+              </p>
+
+              <div className="flex justify-between items-center mb-4">
+                <div className="flex items-center">
+                  <button
+                    onClick={() => handleLike(review.id)}
+                    disabled={review.likedBy.includes(currentUser?.uid || "")}
+                    className={`bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 transition-colors mr-2 ${
+                      review.likedBy.includes(currentUser?.uid || "")
+                        ? "opacity-50 cursor-not-allowed"
+                        : ""
+                    }`}
+                  >
+                    👍 {review.likes}
+                  </button>
+                  <button
+                    onClick={() => handleDislike(review.id)}
+                    disabled={review.dislikedBy.includes(
+                      currentUser?.uid || ""
+                    )}
+                    className={`bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition-colors ${
+                      review.dislikedBy.includes(currentUser?.uid || "")
+                        ? "opacity-50 cursor-not-allowed"
+                        : ""
+                    }`}
+                  >
+                    👎 {review.dislikes}
+                  </button>
+                </div>
+              </div>
+
+              {currentUser && currentUser.uid === review.userId && (
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => handleEdit(review)}
+                    className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors w-full"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => review.id && handleDelete(review.id)}
+                    className="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors w-full"
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>

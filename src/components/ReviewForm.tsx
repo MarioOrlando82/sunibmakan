@@ -73,6 +73,10 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
       userId: user.uid,
       restaurantImage: restaurantImagePreview || "",
       menuImage: menuImagePreview || "",
+      likedBy: [],
+      dislikedBy: [],
+      likes: 0,
+      dislikes: 0,
     };
 
     try {

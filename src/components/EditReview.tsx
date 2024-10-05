@@ -23,6 +23,10 @@ const EditReview: React.FC<EditReviewProps> = ({
     rating: 0,
     restaurantImage: "",
     menuImage: "",
+    likes: 0,
+    dislikes: 0,
+    likedBy: [],
+    dislikedBy: [],
   });
 
   useEffect(() => {
@@ -33,6 +37,10 @@ const EditReview: React.FC<EditReviewProps> = ({
       rating: review.rating,
       restaurantImage: review.restaurantImage,
       menuImage: review.menuImage,
+      likes: review.likes,
+      dislikes: review.dislikes,
+      likedBy: review.likedBy,
+      dislikedBy: review.dislikedBy,
     });
   }, [review]);
 

@@ -1,5 +1,3 @@
-// src/components/RoulettePage.tsx
-
 import React, { useState, useEffect } from "react";
 import { getReviews } from "../services/ReviewService";
 import Modal from "react-modal";
