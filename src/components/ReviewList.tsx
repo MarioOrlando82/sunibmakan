@@ -1,3 +1,5 @@
+// src/components/ReviewList.tsx
+
 import React, { useEffect, useState } from "react";
 import { Review } from "../types/Review";
 import { getReviews, deleteReview } from "../services/ReviewService";
@@ -8,6 +10,7 @@ const ReviewList: React.FC = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [editingReview, setEditingReview] = useState<Review | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>(""); // State for the search term
 
   useEffect(() => {
     fetchReviews();
@@ -66,9 +69,21 @@ const ReviewList: React.FC = () => {
     );
   };
 
+  // Filter reviews based on search term
+  const filteredReviews = reviews.filter((review) =>
+    review.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="container mx-auto mt-8">
       <h2 className="text-2xl font-bold mb-4">Review List</h2>
+      <input
+        type="text"
+        placeholder="Search reviews by name"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="border border-gray-300 rounded p-2 mb-4 w-full"
+      />
       {editingReview ? (
         <EditReview
           review={editingReview}
@@ -77,7 +92,7 @@ const ReviewList: React.FC = () => {
         />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {reviews.map((review) => (
+          {filteredReviews.map((review) => (
             <div
               key={review.id}
               className="bg-white shadow rounded-lg overflow-hidden"
