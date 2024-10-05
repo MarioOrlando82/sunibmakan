@@ -6,6 +6,7 @@ import { signInWithPopup, signOut } from "firebase/auth";
 import ReviewList from "./components/ReviewList";
 import ReviewForm from "./components/ReviewForm";
 import ErrorBoundary from "./components/ErrorBoundary";
+import RoulettePage from "./components/RoulettePage";
 
 const App: React.FC = () => {
   const [user] = useAuthState(auth);
@@ -38,6 +39,11 @@ const App: React.FC = () => {
               <li>
                 <Link to="/add" className="text-blue-500">
                   Add Review
+                </Link>
+              </li>
+              <li>
+                <Link to="/roulette" className="text-blue-500">
+                  Roulette Review
                 </Link>
               </li>
             </ul>
@@ -74,6 +80,7 @@ const App: React.FC = () => {
               path="/add"
               element={<ReviewForm onSubmit={handleFormSubmit} />}
             />
+            <Route path="/roulette" element={<RoulettePage />} />
           </Routes>
         </div>
       </ErrorBoundary>
