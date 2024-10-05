@@ -15,6 +15,7 @@ const ReviewList: React.FC = () => {
   const [editingReview, setEditingReview] = useState<Review | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [filterOption, setFilterOption] = useState<string>("all");
 
   useEffect(() => {
     fetchReviews();
@@ -95,9 +96,18 @@ const ReviewList: React.FC = () => {
     }
   };
 
-  const filteredReviews = reviews.filter((review) =>
-    review.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredReviews = reviews
+    .filter((review) =>
+      review.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (filterOption === "most-liked") {
+        return b.likes - a.likes;
+      } else if (filterOption === "least-liked") {
+        return a.likes - b.likes;
+      }
+      return 0;
+    });
 
   return (
     <div className="container mx-auto mt-8">
@@ -109,6 +119,15 @@ const ReviewList: React.FC = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="border border-gray-300 rounded p-2 mb-4 w-full"
       />
+      <select
+        value={filterOption}
+        onChange={(e) => setFilterOption(e.target.value)}
+        className="border border-gray-300 rounded p-2 mb-4"
+      >
+        <option value="all">All Reviews</option>
+        <option value="most-liked">Most Liked</option>
+        <option value="least-liked">Least Liked</option>
+      </select>
       {editingReview ? (
         <EditReview
           review={editingReview}
