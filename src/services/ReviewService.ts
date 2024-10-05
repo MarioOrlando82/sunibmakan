@@ -8,34 +8,34 @@ import {
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db } from "../firebase";
-import { Restaurant } from "../types/Restaurant";
+import { Review } from "../types/Review";
 
 const COLLECTION_NAME = "restaurants";
 
-export const addRestaurant = async (
-  restaurant: Omit<Restaurant, "id">
+export const addReview = async (
+  review: Omit<Review, "id">
 ): Promise<string> => {
-  const docRef = await addDoc(collection(db, COLLECTION_NAME), restaurant);
+  const docRef = await addDoc(collection(db, COLLECTION_NAME), review);
   return docRef.id;
 };
 
-export const updateRestaurant = async (
+export const updateReview = async (
   id: string,
-  restaurant: Partial<Omit<Restaurant, "id">>
+  review: Partial<Omit<Review, "id">>
 ): Promise<void> => {
-  const restaurantRef = doc(db, COLLECTION_NAME, id);
-  await updateDoc(restaurantRef, restaurant);
+  const reviewRef = doc(db, COLLECTION_NAME, id);
+  await updateDoc(reviewRef, review);
 };
 
-export const deleteRestaurant = async (id: string): Promise<void> => {
-  const restaurantRef = doc(db, COLLECTION_NAME, id);
-  await deleteDoc(restaurantRef);
+export const deleteReview = async (id: string): Promise<void> => {
+  const reviewRef = doc(db, COLLECTION_NAME, id);
+  await deleteDoc(reviewRef);
 };
 
-export const getRestaurants = async (): Promise<Restaurant[]> => {
+export const getReviews = async (): Promise<Review[]> => {
   const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
   return querySnapshot.docs.map(
-    (doc) => ({ id: doc.id, ...doc.data() } as Restaurant)
+    (doc) => ({ id: doc.id, ...doc.data() } as Review)
   );
 };
 

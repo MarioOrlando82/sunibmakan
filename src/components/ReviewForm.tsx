@@ -1,26 +1,26 @@
 import React, { useState } from "react";
-import { Restaurant } from "../types/Restaurant";
+import { Review } from "../types/Review";
 import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
 import {
-  addRestaurant,
-  updateRestaurant,
+  addReview,
+  updateReview,
   uploadImage,
-} from "../services/RestaurantService";
+} from "../services/ReviewService";
 
 interface Props {
-  restaurant?: Restaurant;
+  review?: Review;
   onSubmit: () => void;
 }
 
-const RestaurantForm: React.FC<Props> = ({ restaurant, onSubmit }) => {
+const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
   const navigate = useNavigate();
   const [user] = useAuthState(auth);
-  const [name, setName] = useState(restaurant?.name || "");
-  const [address, setAddress] = useState(restaurant?.address || "");
-  const [description, setDescription] = useState(restaurant?.description || "");
-  const [rating, setRating] = useState(restaurant?.rating || 0);
+  const [name, setName] = useState(review?.name || "");
+  const [address, setAddress] = useState(review?.address || "");
+  const [description, setDescription] = useState(review?.description || "");
+  const [rating, setRating] = useState(review?.rating || 0);
   const [restaurantImage, setRestaurantImage] = useState<File | null>(null);
   const [menuImage, setMenuImage] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,7 +33,7 @@ const RestaurantForm: React.FC<Props> = ({ restaurant, onSubmit }) => {
     }
     setIsSubmitting(true);
 
-    const restaurantData: Partial<Restaurant> = {
+    const reviewData: Partial<Review> = {
       name,
       address,
       description,
@@ -43,12 +43,12 @@ const RestaurantForm: React.FC<Props> = ({ restaurant, onSubmit }) => {
     };
 
     try {
-      let id = restaurant?.id;
+      let id = review?.id;
 
       if (id) {
-        await updateRestaurant(id, restaurantData);
+        await updateReview(id, reviewData);
       } else {
-        id = await addRestaurant(restaurantData as Restaurant);
+        id = await addReview(reviewData as Review);
       }
 
       if (restaurantImage) {
@@ -56,7 +56,7 @@ const RestaurantForm: React.FC<Props> = ({ restaurant, onSubmit }) => {
           restaurantImage,
           `restaurants/${id}/restaurant-image`
         );
-        await updateRestaurant(id, { restaurantImage: restaurantImageUrl });
+        await updateReview(id, { restaurantImage: restaurantImageUrl });
       }
 
       if (menuImage) {
@@ -64,13 +64,13 @@ const RestaurantForm: React.FC<Props> = ({ restaurant, onSubmit }) => {
           menuImage,
           `restaurants/${id}/menu-image`
         );
-        await updateRestaurant(id, { menuImage: menuImageUrl });
+        await updateReview(id, { menuImage: menuImageUrl });
       }
 
       onSubmit();
       navigate("/");
     } catch (error) {
-      console.error("Error submitting restaurant data:", error);
+      console.error("Error submitting review data:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -180,8 +180,7 @@ const RestaurantForm: React.FC<Props> = ({ restaurant, onSubmit }) => {
         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
         disabled={isSubmitting || !user}
       >
-        {isSubmitting ? "Submitting..." : restaurant ? "Update" : "Add"}{" "}
-        Restaurant
+        {isSubmitting ? "Submitting..." : review ? "Update" : "Add"} Review
       </button>
       {!user && (
         <p className="text-red-500 text-sm mt-2">
@@ -192,4 +191,4 @@ const RestaurantForm: React.FC<Props> = ({ restaurant, onSubmit }) => {
   );
 };
 
-export default RestaurantForm;
+export default ReviewForm;
