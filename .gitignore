@@ -38,5 +38,3 @@ Thumbs.db
 
 # Tailwind
 .output/
-
-src/firebase.ts
