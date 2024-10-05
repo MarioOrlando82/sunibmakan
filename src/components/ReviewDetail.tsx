@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom";
 import { getReviews } from "../services/ReviewService";
 import { Review } from "../types/Review";
 import { Comment } from "../types/Comment";
-import { getAuth } from "firebase/auth";
 import { addComment, getComments } from "../services/CommentService";
+import { getAuth } from "firebase/auth";
 
 const ReviewDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -13,6 +13,7 @@ const ReviewDetail: React.FC = () => {
   const [newComment, setNewComment] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const auth = getAuth();
+
   const generateStars = (rating: number) => {
     const fullStars = Math.floor(rating);
     const halfStars = rating % 1 >= 0.5 ? 1 : 0;
@@ -26,16 +27,27 @@ const ReviewDetail: React.FC = () => {
       </>
     );
   };
+
   useEffect(() => {
     const fetchReviewDetail = async () => {
-      const reviews = await getReviews();
-      const foundReview = reviews.find((r) => r.id === id);
-      setReview(foundReview || null);
-      if (foundReview) {
-        const fetchedComments = await getComments(foundReview.id);
-        setComments(fetchedComments);
+      try {
+        const reviews = await getReviews();
+        const foundReview = reviews.find((r) => r.id === id);
+        console.log("Found review:", foundReview);
+        setReview(foundReview || null);
+
+        if (foundReview) {
+          const fetchedComments = await getComments(foundReview.id);
+          console.log("Fetched comments:", fetchedComments);
+          setComments(fetchedComments);
+        } else {
+          console.warn("No review found with the given ID");
+        }
+      } catch (error) {
+        console.error("Error fetching review detail:", error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchReviewDetail();
@@ -90,34 +102,47 @@ const ReviewDetail: React.FC = () => {
       {/* Comments Section */}
       <div className="mt-8">
         <h3 className="text-xl font-bold mb-4">Comments</h3>
-        <ul className="space-y-4">
-          {comments.map((comment) => (
-            <li key={comment.id} className="border p-4 rounded-lg">
-              <p className="font-semibold">{comment.username}</p>
-              <p className="text-gray-700">{comment.text}</p>
-              <p className="text-gray-500 text-sm">
-                {comment.createdAt.toString()}
-              </p>
-            </li>
-          ))}
-        </ul>
+        {comments.length > 0 ? (
+          <ul className="space-y-4">
+            {comments.map((comment) => (
+              <li key={comment.id} className="border p-4 rounded-lg">
+                <p className="font-semibold">{comment.username}</p>
+                <p className="text-gray-700">{comment.text}</p>
+                <p className="text-gray-500 text-sm">
+                  {comment.createdAt.toString()}
+                </p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No comments yet.</p>
+        )}
 
-        {/* Comment Form */}
-        <form onSubmit={handleCommentSubmit} className="mt-4">
-          <textarea
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            placeholder="Add a comment..."
-            className="border p-2 rounded w-full"
-            required
-          />
-          <button
-            type="submit"
-            className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
-          >
-            Submit Comment
-          </button>
-        </form>
+        {auth.currentUser ? (
+          <form onSubmit={handleCommentSubmit} className="mt-4">
+            <textarea
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              placeholder="Add a comment..."
+              className="border p-2 rounded w-full"
+              required
+            />
+            <button
+              type="submit"
+              className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+            >
+              Submit Comment
+            </button>
+          </form>
+        ) : (
+          <p className="mt-4 text-gray-500">
+            You need to sign in to leave a comment. Please{" "}
+            <a href="/sign-in" className="text-blue-500 underline">
+              sign in
+            </a>
+            .
+          </p>
+        )}
       </div>
     </div>
   );

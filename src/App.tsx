@@ -48,15 +48,26 @@ const App: React.FC = () => {
                 </Link>
               </li>
             </ul>
-            {user ? (
-              <button onClick={handleSignOut} className="text-red-500">
-                Sign Out
-              </button>
-            ) : (
-              <button onClick={handleSignIn} className="text-blue-500">
-                Sign In
-              </button>
-            )}
+            <div>
+              {user ? (
+                <>
+                  <span className="mr-4">Welcome, {user.displayName}!</span>
+                  <button
+                    onClick={handleSignOut}
+                    className="bg-red-500 text-white px-4 py-2 rounded"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={handleSignIn}
+                  className="bg-blue-500 text-white px-4 py-2 rounded"
+                >
+                  Sign In with Google
+                </button>
+              )}
+            </div>
           </nav>
           <Routes>
             <Route path="/" element={<ReviewList />} />
