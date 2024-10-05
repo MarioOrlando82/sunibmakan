@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Review } from "../types/Review";
-import { getReviews, deleteReview } from "../services/ReviewService";
+import {
+  getReviews,
+  deleteReview,
+  likeReview,
+  dislikeReview,
+} from "../services/ReviewService";
 import EditReview from "./EditReview";
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 import { Link } from "react-router-dom";
@@ -68,6 +73,28 @@ const ReviewList: React.FC = () => {
     );
   };
 
+  const handleLike = async (id: string) => {
+    if (!currentUser) {
+      alert("You must be logged in to like a review.");
+      return;
+    }
+    try {
+      await likeReview(id);
+      fetchReviews();
+    } catch (error: any) {
+      alert(error.message || "An error occurred while liking the review.");
+    }
+  };
+
+  const handleDislike = async (id: string) => {
+    try {
+      await dislikeReview(id);
+      fetchReviews();
+    } catch (error: any) {
+      alert(error.message || "An error occurred while disliking the review.");
+    }
+  };
+
   const filteredReviews = reviews.filter((review) =>
     review.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -86,7 +113,7 @@ const ReviewList: React.FC = () => {
         <EditReview
           review={editingReview}
           onSave={handleSave}
-          onCancel={handleCancel}
+          onCancel={() => setEditingReview(null)}
         />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -120,7 +147,33 @@ const ReviewList: React.FC = () => {
                   Reviewed by: {review.reviewerName || "Anonymous"}
                 </p>
 
-                {/* Detail Button */}
+                <div className="flex justify-between mb-4">
+                  <button
+                    onClick={() => handleLike(review.id)}
+                    disabled={review.likedBy.includes(currentUser?.uid || "")}
+                    className={`bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 transition-colors mr-2 ${
+                      review.likedBy.includes(currentUser?.uid || "")
+                        ? "opacity-50 cursor-not-allowed"
+                        : ""
+                    }`}
+                  >
+                    👍 {review.likes}
+                  </button>
+                  <button
+                    onClick={() => handleDislike(review.id)}
+                    disabled={review.dislikedBy.includes(
+                      currentUser?.uid || ""
+                    )}
+                    className={`bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition-colors ${
+                      review.dislikedBy.includes(currentUser?.uid || "")
+                        ? "opacity-50 cursor-not-allowed"
+                        : ""
+                    }`}
+                  >
+                    👎 {review.dislikes}
+                  </button>
+                </div>
+
                 <Link
                   to={`/review/${review.id}`}
                   className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors w-full text-center"

@@ -78,8 +78,8 @@ export const getReviews = async (): Promise<Review[]> => {
     return {
       ...data,
       id: doc.id,
-      likedBy: data.likedBy || [], 
-      dislikedBy: data.dislikedBy || [], 
+      likedBy: data.likedBy || [],
+      dislikedBy: data.dislikedBy || [],
     };
   });
 };
@@ -121,15 +121,22 @@ export const likeReview = async (id: string): Promise<void> => {
   if (reviewDoc.exists()) {
     const reviewData = reviewDoc.data() as Review;
 
-    const likedBy = reviewData.likedBy || []; 
+    const likedBy = reviewData.likedBy || [];
     if (!likedBy.includes(user.uid)) {
-      await updateDoc(reviewRef, {
-        likes: increment(1),
-        likedBy: [...likedBy, user.uid],
-      });
+      try {
+        await updateDoc(reviewRef, {
+          likes: increment(1),
+          likedBy: [...likedBy, user.uid],
+        });
+      } catch (error) {
+        console.error("Error updating review:", error);
+        throw new Error("Failed to like the review. Please try again later.");
+      }
     } else {
       throw new Error("You have already liked this review");
     }
+  } else {
+    throw new Error("Review does not exist");
   }
 };
 
@@ -145,11 +152,11 @@ export const dislikeReview = async (id: string): Promise<void> => {
   if (reviewDoc.exists()) {
     const reviewData = reviewDoc.data() as Review;
 
-    const dislikedBy = reviewData.dislikedBy || []; 
+    const dislikedBy = reviewData.dislikedBy || [];
     if (!dislikedBy.includes(user.uid)) {
       await updateDoc(reviewRef, {
         dislikes: increment(1),
-        dislikedBy: [...dislikedBy, user.uid], 
+        dislikedBy: [...dislikedBy, user.uid],
       });
     } else {
       throw new Error("You have already disliked this review");
