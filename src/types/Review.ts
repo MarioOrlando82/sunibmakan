@@ -12,4 +12,6 @@ export interface Review {
   dislikes: number;
   likedBy: string[];
   dislikedBy: string[];
+  phoneNumber: string;
+  createdAt: Date | string;
 }

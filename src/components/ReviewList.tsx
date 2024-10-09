@@ -105,6 +105,10 @@ const ReviewList: React.FC = () => {
         return b.likes - a.likes;
       } else if (filterOption === "least-liked") {
         return a.likes - b.likes;
+      } else if (filterOption === "recent") {
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
       }
       return 0;
     });
@@ -127,6 +131,7 @@ const ReviewList: React.FC = () => {
             className="border border-gray-300 rounded p-2 mb-4"
           >
             <option value="all">All Reviews</option>
+            <option value="recent">Most Recent</option>
             <option value="most-liked">Most Liked</option>
             <option value="least-liked">Least Liked</option>
           </select>
@@ -156,6 +161,7 @@ const ReviewList: React.FC = () => {
               <div className="p-4">
                 <h3 className="text-xl font-semibold mb-2">{review.name}</h3>
                 <p className="text-gray-600 mb-2">{review.address}</p>
+                <p className="text-gray-600 mb-2">{review.phoneNumber}</p>
                 <p className="text-sm text-gray-500 mb-2">
                   {review.description}
                 </p>

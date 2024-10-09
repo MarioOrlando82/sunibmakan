@@ -32,6 +32,7 @@ export const addReview = async (
     likedBy: [],
     dislikedBy: [],
     userId: user.uid,
+    createdAt: new Date().toISOString(),
   };
 
   const docRef = await addDoc(collection(db, COLLECTION_NAME), newReview);

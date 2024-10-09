@@ -27,6 +27,8 @@ const EditReview: React.FC<EditReviewProps> = ({
     dislikes: 0,
     likedBy: [],
     dislikedBy: [],
+    phoneNumber: "",
+    createdAt: "",
   });
 
   useEffect(() => {
@@ -41,6 +43,8 @@ const EditReview: React.FC<EditReviewProps> = ({
       dislikes: review.dislikes,
       likedBy: review.likedBy,
       dislikedBy: review.dislikedBy,
+      phoneNumber: review.phoneNumber,
+      createdAt: review.createdAt,
     });
   }, [review]);
 
@@ -123,6 +127,22 @@ const EditReview: React.FC<EditReviewProps> = ({
           onChange={handleChange}
           required
         />
+        <div className="mb-4">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="description"
+          >
+            Phone Number
+          </label>
+          <textarea
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="phoneNumber"
+            name="phoneNumber"
+            value={formData.phoneNumber}
+            onChange={handleChange}
+            required
+          />
+        </div>
       </div>
       <div className="mb-4">
         <label
@@ -140,6 +160,7 @@ const EditReview: React.FC<EditReviewProps> = ({
           required
         />
       </div>
+
       <div className="mb-4">
         <label
           className="block text-gray-700 text-sm font-bold mb-2"

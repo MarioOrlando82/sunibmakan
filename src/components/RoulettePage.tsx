@@ -66,6 +66,7 @@ const RoulettePage: React.FC = () => {
             )}
             <h3 className="text-xl font-semibold mb-2">{randomReview.name}</h3>
             <p className="text-gray-600 mb-2">{randomReview.address}</p>
+            <p className="text-gray-600 mb-2">{randomReview.phoneNumber}</p>
             <p className="text-sm text-gray-500 mb-2">
               {randomReview.description}
             </p>

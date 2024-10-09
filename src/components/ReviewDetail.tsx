@@ -90,6 +90,7 @@ const ReviewDetail: React.FC = () => {
         />
       )}
       <p className="text-gray-600 mb-2">{review.address}</p>
+      <p className="text-sm text-gray-500 mb-2">{review.phoneNumber}</p>
       <p className="text-sm text-gray-500 mb-2">{review.description}</p>
       <div className="flex justify-between items-center mb-2">
         <span className="text-yellow-500">{generateStars(review.rating)}</span>
@@ -99,7 +100,6 @@ const ReviewDetail: React.FC = () => {
         Reviewed by: {review.reviewerName || "Anonymous"}
       </p>
 
-      {/* Comments Section */}
       <div className="mt-8">
         <h3 className="text-xl font-bold mb-4">Comments</h3>
         {comments.length > 0 ? (
