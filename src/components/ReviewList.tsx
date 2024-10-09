@@ -100,9 +100,38 @@ const ReviewList: React.FC = () => {
   };
 
   const filteredReviews = reviews
-    .filter((review) =>
-      review.name.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    .filter((review) => {
+      const matchesSearch = review.name
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+
+      const now = new Date();
+      const reviewDate = new Date(review.createdAt);
+
+      const last24Hours = new Date(now);
+      last24Hours.setDate(now.getDate() - 1);
+
+      const startOfWeek = new Date(now);
+      startOfWeek.setDate(now.getDate() - now.getDay());
+
+      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+      const startOfYear = new Date(now.getFullYear(), 0, 1);
+
+      let matchesTimeFilter = true;
+
+      if (filterOption === "last-24-hours") {
+        matchesTimeFilter = reviewDate >= last24Hours;
+      } else if (filterOption === "this-week") {
+        matchesTimeFilter = reviewDate >= startOfWeek;
+      } else if (filterOption === "this-month") {
+        matchesTimeFilter = reviewDate >= startOfMonth;
+      } else if (filterOption === "this-year") {
+        matchesTimeFilter = reviewDate >= startOfYear;
+      }
+
+      return matchesSearch && matchesTimeFilter;
+    })
     .sort((a, b) => {
       if (filterOption === "most-liked") {
         return b.likes - a.likes;
@@ -112,6 +141,8 @@ const ReviewList: React.FC = () => {
         return (
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
+      } else if (filterOption === "all") {
+        return a.name.localeCompare(b.name);
       }
       return 0;
     });
@@ -148,6 +179,10 @@ const ReviewList: React.FC = () => {
             <option value="recent">Most Recent</option>
             <option value="most-liked">Most Liked</option>
             <option value="least-liked">Least Liked</option>
+            <option value="last-24-hours">Last 24 Hours</option>
+            <option value="this-week">This Week</option>
+            <option value="this-month">This Month</option>
+            <option value="this-year">This Year</option>
           </select>
         </>
       )}
