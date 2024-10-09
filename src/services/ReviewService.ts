@@ -9,6 +9,7 @@ import {
   where,
   getDoc,
   increment,
+  setDoc,
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getAuth } from "firebase/auth";
@@ -16,6 +17,7 @@ import { db } from "../firebase";
 import { Review } from "../types/Review";
 
 const COLLECTION_NAME = "restaurants";
+const USERS_COLLECTION = "users";
 
 export const addReview = async (
   review: Omit<Review, "id" | "likedBy" | "dislikedBy">
@@ -36,6 +38,18 @@ export const addReview = async (
   };
 
   const docRef = await addDoc(collection(db, COLLECTION_NAME), newReview);
+
+  const userRef = doc(db, USERS_COLLECTION, user.uid);
+  const userDoc = await getDoc(userRef);
+
+  if (userDoc.exists()) {
+    await updateDoc(userRef, {
+      points: increment(1),
+    });
+  } else {
+    await setDoc(userRef, { points: 1 });
+  }
+
   return docRef.id;
 };
 

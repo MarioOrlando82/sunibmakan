@@ -9,6 +9,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import RoulettePage from "./components/RoulettePage";
 import ReviewDetail from "./components/ReviewDetail";
 import Leaderboard from "./components/Leaderboard";
+import QuestPage from "./components/QuestPage";
 
 const App: React.FC = () => {
   const [user] = useAuthState(auth);
@@ -53,6 +54,11 @@ const App: React.FC = () => {
                   Leaderboard
                 </Link>
               </li>
+              <li>
+                <Link to="/quest" className="text-blue-500">
+                  Quest
+                </Link>
+              </li>
             </ul>
             <div>
               {user ? (
@@ -84,6 +90,7 @@ const App: React.FC = () => {
             <Route path="/roulette" element={<RoulettePage />} />
             <Route path="/review/:id" element={<ReviewDetail />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/quest" element={<QuestPage />} />
           </Routes>
         </div>
       </ErrorBoundary>
