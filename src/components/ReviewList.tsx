@@ -17,6 +17,9 @@ const ReviewList: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [filterOption, setFilterOption] = useState<string>("all");
 
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const reviewsPerPage = 6;
+
   useEffect(() => {
     fetchReviews();
     const auth = getAuth();
@@ -113,6 +116,17 @@ const ReviewList: React.FC = () => {
       return 0;
     });
 
+  const indexOfLastReview = currentPage * reviewsPerPage;
+  const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
+  const currentReviews = filteredReviews.slice(
+    indexOfFirstReview,
+    indexOfLastReview
+  );
+
+  const totalPages = Math.ceil(filteredReviews.length / reviewsPerPage);
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
   return (
     <div className="container mx-auto mt-8">
       {!editingReview && (
@@ -146,7 +160,7 @@ const ReviewList: React.FC = () => {
         />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredReviews.map((review) => (
+          {currentReviews.map((review) => (
             <div
               key={review.id}
               className="bg-white shadow rounded-lg overflow-hidden"
@@ -232,6 +246,25 @@ const ReviewList: React.FC = () => {
           ))}
         </div>
       )}
+
+      {/* Pagination Controls */}
+      <div className="flex justify-center mt-4">
+        {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+          (page) => (
+            <button
+              key={page}
+              onClick={() => paginate(page)}
+              className={`mx-1 px-3 py-1 rounded ${
+                page === currentPage
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-300 text-black"
+              }`}
+            >
+              {page}
+            </button>
+          )
+        )}
+      </div>
     </div>
   );
 };
