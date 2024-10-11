@@ -196,7 +196,7 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
           type="number"
           id="rating"
           value={rating}
-          onChange={(e) => setRating(Number(e.target.value))}
+          onChange={(e) => setRating(Math.min(5, Math.max(0, Number(e.target.value))))}
           min="0"
           max="5"
           step="0.1"
