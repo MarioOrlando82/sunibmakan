@@ -30,32 +30,49 @@ const App: React.FC = () => {
   return (
     <Router>
       <ErrorBoundary>
-        <div className="container mx-auto p-4">
-          <h1 className="text-3xl font-bold mb-8">SunibMakan</h1>
-          <nav className="mb-4 flex justify-between items-center">
-            <ul className="flex space-x-4">
+        <div className="container mx-auto p-6 bg-pastel-light min-h-screen">
+          <h1 className="text-4xl font-bold text-pastel-dark mb-10 text-center">
+            SunibMakan
+          </h1>
+          <nav className="mb-8 flex justify-between items-center bg-pastel-lightDark p-4 rounded-lg shadow-md">
+            <ul className="flex space-x-6">
               <li>
-                <Link to="/" className="text-blue-500">
+                <Link
+                  to="/"
+                  className="text-pastel-primary font-semibold hover:text-pastel-dark"
+                >
                   Review List
                 </Link>
               </li>
               <li>
-                <Link to="/add" className="text-blue-500">
+                <Link
+                  to="/add"
+                  className="text-pastel-primary font-semibold hover:text-pastel-dark"
+                >
                   Add Review
                 </Link>
               </li>
               <li>
-                <Link to="/roulette" className="text-blue-500">
+                <Link
+                  to="/roulette"
+                  className="text-pastel-primary font-semibold hover:text-pastel-dark"
+                >
                   Roulette
                 </Link>
               </li>
               <li>
-                <Link to="/leaderboard" className="text-blue-500">
+                <Link
+                  to="/leaderboard"
+                  className="text-pastel-primary font-semibold hover:text-pastel-dark"
+                >
                   Leaderboard
                 </Link>
               </li>
               <li>
-                <Link to="/quest" className="text-blue-500">
+                <Link
+                  to="/quest"
+                  className="text-pastel-primary font-semibold hover:text-pastel-dark"
+                >
                   Quest
                 </Link>
               </li>
@@ -63,10 +80,10 @@ const App: React.FC = () => {
             <div>
               {user ? (
                 <>
-                  <span className="mr-4">Welcome, {user.displayName}!</span>
+                  <span className="mr-4 text-pastel-dark">Welcome, {user.displayName}!</span>
                   <button
                     onClick={handleSignOut}
-                    className="bg-red-500 text-white px-4 py-2 rounded"
+                    className="bg-pastel-accent text-white px-4 py-2 rounded-lg shadow-lg hover:bg-red-600 transition-all"
                   >
                     Sign Out
                   </button>
@@ -74,7 +91,7 @@ const App: React.FC = () => {
               ) : (
                 <button
                   onClick={handleSignIn}
-                  className="bg-blue-500 text-white px-4 py-2 rounded"
+                  className="bg-pastel-accent text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-600 transition-all"
                 >
                   Sign In with Google
                 </button>
