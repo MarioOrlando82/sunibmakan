@@ -168,12 +168,12 @@ const ReviewList: React.FC = () => {
             placeholder="Search reviews by name"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="border border-gray-300 rounded p-2 mb-4 w-full"
+            className="border border-gray-300 rounded p-2 mb-4 w-full shadow-sm"
           />
           <select
             value={filterOption}
             onChange={(e) => setFilterOption(e.target.value)}
-            className="border border-gray-300 rounded p-2 mb-4"
+            className="border border-gray-300 rounded p-2 mb-4 shadow-sm"
           >
             <option value="all">All Reviews</option>
             <option value="recent">Most Recent</option>
@@ -198,7 +198,7 @@ const ReviewList: React.FC = () => {
           {currentReviews.map((review) => (
             <div
               key={review.id}
-              className="bg-white shadow rounded-lg overflow-hidden"
+              className="bg-white shadow-md rounded-lg overflow-hidden p-4"
             >
               {review.restaurantImage && (
                 <img
@@ -230,7 +230,7 @@ const ReviewList: React.FC = () => {
                   <button
                     onClick={() => handleLike(review.id)}
                     disabled={review.likedBy.includes(currentUser?.uid || "")}
-                    className={`bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 transition-colors mr-2 ${
+                    className={`bg-pastel-primary text-white px-4 py-2 rounded hover:bg-pastel-accent transition-colors mr-2 ${
                       review.likedBy.includes(currentUser?.uid || "")
                         ? "opacity-50 cursor-not-allowed"
                         : ""
@@ -243,7 +243,7 @@ const ReviewList: React.FC = () => {
                     disabled={review.dislikedBy.includes(
                       currentUser?.uid || ""
                     )}
-                    className={`bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition-colors ${
+                    className={`bg-pastel-dark text-white px-4 py-2 rounded hover:bg-pastel-accent transition-colors ${
                       review.dislikedBy.includes(currentUser?.uid || "")
                         ? "opacity-50 cursor-not-allowed"
                         : ""
@@ -255,7 +255,7 @@ const ReviewList: React.FC = () => {
 
                 <Link
                   to={`/review/${review.id}`}
-                  className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors w-full text-center"
+                  className="mt-2 bg-pastel-primary text-white px-4 py-2 rounded hover:bg-pastel-accent transition-colors w-full text-center"
                 >
                   Detail
                 </Link>
@@ -264,13 +264,13 @@ const ReviewList: React.FC = () => {
                   <>
                     <button
                       onClick={() => handleEdit(review)}
-                      className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors w-full"
+                      className="mt-2 bg-pastel-primary text-white px-4 py-2 rounded hover:bg-pastel-accent transition-colors w-full"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => review.id && handleDelete(review.id)}
-                      className="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors w-full"
+                      className="mt-2 bg-pastel-dark text-white px-4 py-2 rounded hover:bg-pastel-accent transition-colors w-full"
                     >
                       Delete
                     </button>
@@ -291,7 +291,7 @@ const ReviewList: React.FC = () => {
               onClick={() => paginate(page)}
               className={`mx-1 px-3 py-1 rounded ${
                 page === currentPage
-                  ? "bg-blue-500 text-white"
+                  ? "bg-pastel-primary text-white"
                   : "bg-gray-300 text-black"
               }`}
             >
