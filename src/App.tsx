@@ -28,7 +28,8 @@ const App: React.FC = () => {
   };
 
   return (
-    <Router>
+    <div className="bg-pastel-light">
+          <Router>
       <ErrorBoundary>
         <div className="container mx-auto p-6 bg-pastel-light min-h-screen">
           <h1 className="text-4xl font-bold text-pastel-dark mb-10 text-center">
@@ -112,6 +113,8 @@ const App: React.FC = () => {
         </div>
       </ErrorBoundary>
     </Router>
+    </div>
+
   );
 };
 
