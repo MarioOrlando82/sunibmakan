@@ -44,7 +44,7 @@ const RoulettePage: React.FC = () => {
       <h2 className="text-2xl font-bold mb-4">Roulette Review</h2>
       <button
         onClick={handleRoulette}
-        className="bg-green-500 text-white px-4 py-2 rounded mb-4 hover:bg-green-600 transition-colors"
+        className="bg-pastel-primary text-white px-4 py-2 rounded-lg mb-4 hover:bg-pastel-accent transition-colors"
       >
         Spin the Roulette!
       </button>
@@ -52,16 +52,16 @@ const RoulettePage: React.FC = () => {
       <Modal
         isOpen={isModalOpen}
         onRequestClose={() => setIsModalOpen(false)}
-        className="modal-content"
-        overlayClassName="modal-overlay"
+        className="modal-content fixed top-0 left-0 w-full h-full flex items-center justify-center z-50"
+        overlayClassName="modal-overlay bg-black bg-opacity-50 fixed inset-0 z-40"
       >
         {randomReview && (
-          <div className="p-4">
+          <div className="bg-white p-4 rounded-lg shadow-lg max-w-lg w-full">
             {randomReview.restaurantImage && (
               <img
                 src={randomReview.restaurantImage}
                 alt={randomReview.name}
-                className="w-full h-48 object-cover"
+                className="w-full h-48 object-cover rounded-t-lg"
               />
             )}
             <h3 className="text-xl font-semibold mb-2">{randomReview.name}</h3>
@@ -73,13 +73,13 @@ const RoulettePage: React.FC = () => {
             <span className="text-yellow-500">
               {generateStars(randomReview.rating)}
             </span>
-            <span>{Number(randomReview.rating).toFixed(1)}</span>
+            <span className="ml-2">{Number(randomReview.rating).toFixed(1)}</span>
             <p className="text-sm text-gray-600 mb-2">
               Reviewed by: {randomReview.reviewerName || "Anonymous"}
             </p>
             <button
               onClick={() => setIsModalOpen(false)}
-              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors w-full"
+              className="mt-4 bg-pastel-primary text-white px-4 py-2 rounded-lg hover:bg-pastel-accent transition-colors w-full"
             >
               Close
             </button>
