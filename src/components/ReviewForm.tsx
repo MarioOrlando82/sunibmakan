@@ -120,11 +120,12 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-6 bg-pastel-light p-6 rounded-lg shadow-lg max-w-lg mx-auto">
+      <h2 className="text-2xl font-bold text-pastel-dark text-center">Add a Review</h2>
       <div>
         <label
           htmlFor="name"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-pastel-dark"
         >
           Name
         </label>
@@ -134,13 +135,13 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          className="mt-1 block w-full rounded-md border-pastel-primary bg-pastel-lightDark shadow-sm focus:border-pastel-accent focus:ring focus:ring-pastel-accent focus:ring-opacity-50"
         />
       </div>
       <div>
         <label
           htmlFor="address"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-pastel-dark"
         >
           Address
         </label>
@@ -150,13 +151,13 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
           value={address}
           onChange={(e) => setAddress(e.target.value)}
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          className="mt-1 block w-full rounded-md border-pastel-primary bg-pastel-lightDark shadow-sm focus:border-pastel-accent focus:ring focus:ring-pastel-accent focus:ring-opacity-50"
         />
       </div>
       <div>
         <label
           htmlFor="phoneNumber"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-pastel-dark"
         >
           Phone Number
         </label>
@@ -166,13 +167,13 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          className="mt-1 block w-full rounded-md border-pastel-primary bg-pastel-lightDark shadow-sm focus:border-pastel-accent focus:ring focus:ring-pastel-accent focus:ring-opacity-50"
         />
       </div>
       <div>
         <label
           htmlFor="description"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-pastel-dark"
         >
           Description
         </label>
@@ -181,14 +182,14 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          className="mt-1 block w-full rounded-md border-pastel-primary bg-pastel-lightDark shadow-sm focus:border-pastel-accent focus:ring focus:ring-pastel-accent focus:ring-opacity-50"
           rows={3}
         />
       </div>
       <div>
         <label
           htmlFor="rating"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-pastel-dark"
         >
           Rating
         </label>
@@ -196,18 +197,20 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
           type="number"
           id="rating"
           value={rating}
-          onChange={(e) => setRating(Math.min(5, Math.max(0, Number(e.target.value))))}
+          onChange={(e) =>
+            setRating(Math.min(5, Math.max(0, Number(e.target.value))))
+          }
           min="0"
           max="5"
           step="0.1"
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          className="mt-1 block w-full rounded-md border-pastel-primary bg-pastel-lightDark shadow-sm focus:border-pastel-accent focus:ring focus:ring-pastel-accent focus:ring-opacity-50"
         />
       </div>
       <div>
         <label
           htmlFor="restaurantImage"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-pastel-dark"
         >
           Restaurant Image
         </label>
@@ -218,20 +221,20 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
             handleImageChange(e, setRestaurantImage, setRestaurantImagePreview)
           }
           accept="image/*"
-          className="mt-1 block w-full"
+          className="mt-1 block w-full bg-pastel-lightDark rounded-md"
         />
         {restaurantImagePreview && (
           <img
             src={restaurantImagePreview}
             alt="Restaurant preview"
-            className="mt-2 w-full h-48 object-cover"
+            className="mt-2 w-full h-48 object-cover rounded-lg border-pastel-primary"
           />
         )}
       </div>
       <div>
         <label
           htmlFor="menuImage"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-pastel-dark"
         >
           Menu Image
         </label>
@@ -242,19 +245,19 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
             handleImageChange(e, setMenuImage, setMenuImagePreview)
           }
           accept="image/*"
-          className="mt-1 block w-full"
+          className="mt-1 block w-full bg-pastel-lightDark rounded-md"
         />
         {menuImagePreview && (
           <img
             src={menuImagePreview}
             alt="Menu preview"
-            className="mt-2 w-full h-48 object-cover"
+            className="mt-2 w-full h-48 object-cover rounded-lg border-pastel-primary"
           />
         )}
       </div>
       <button
         type="submit"
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+        className="bg-pastel-primary text-white px-4 py-2 rounded hover:bg-pastel-accent transition-colors disabled:opacity-50"
         disabled={isSubmitting || !user}
       >
         {isSubmitting ? "Submitting..." : review ? "Update" : "Add"} Review
