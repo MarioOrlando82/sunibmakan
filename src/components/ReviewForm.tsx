@@ -120,14 +120,19 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 bg-pastel-light p-6 rounded-lg shadow-lg max-w-lg mx-auto">
-      <h2 className="text-2xl font-bold text-pastel-dark text-center">Add a Review</h2>
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-6 bg-pastel-light p-6 rounded-lg shadow-lg max-w-lg mx-auto"
+    >
+      <h2 className="text-2xl font-bold text-pastel-dark text-center">
+        Add a Review
+      </h2>
       <div>
         <label
           htmlFor="name"
           className="block text-sm font-medium text-pastel-dark"
         >
-          Name
+          Restaurant Name
         </label>
         <input
           type="text"
@@ -221,8 +226,14 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
             handleImageChange(e, setRestaurantImage, setRestaurantImagePreview)
           }
           accept="image/*"
-          className="mt-1 block w-full bg-pastel-lightDark rounded-md"
+          className="hidden"
         />
+        <label
+          htmlFor="restaurantImage"
+          className="mt-1 inline-block cursor-pointer bg-pastel-primary text-white font-semibold py-2 px-4 rounded-lg hover:bg-pastel-accent transition-colors"
+        >
+          Choose File
+        </label>
         {restaurantImagePreview && (
           <img
             src={restaurantImagePreview}
@@ -231,6 +242,7 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
           />
         )}
       </div>
+
       <div>
         <label
           htmlFor="menuImage"
@@ -245,8 +257,14 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
             handleImageChange(e, setMenuImage, setMenuImagePreview)
           }
           accept="image/*"
-          className="mt-1 block w-full bg-pastel-lightDark rounded-md"
+          className="hidden"
         />
+        <label
+          htmlFor="menuImage"
+          className="mt-1 inline-block cursor-pointer bg-pastel-primary text-white font-semibold py-2 px-4 rounded-lg hover:bg-pastel-accent transition-colors"
+        >
+          Choose File
+        </label>
         {menuImagePreview && (
           <img
             src={menuImagePreview}
@@ -255,13 +273,15 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
           />
         )}
       </div>
-      <button
-        type="submit"
-        className="bg-pastel-primary text-white px-4 py-2 rounded hover:bg-pastel-accent transition-colors disabled:opacity-50"
-        disabled={isSubmitting || !user}
-      >
-        {isSubmitting ? "Submitting..." : review ? "Update" : "Add"} Review
-      </button>
+      <div className="flex justify-center">
+        <button
+          type="submit"
+          className="bg-pastel-primary text-white px-4 py-2 rounded-lg hover:bg-pastel-accent transition-colors disabled:opacity-50"
+          disabled={isSubmitting || !user}
+        >
+          {isSubmitting ? "Submitting..." : review ? "Update" : "Add"} Review
+        </button>
+      </div>
       {!user && (
         <p className="text-red-500 text-sm mt-2">
           Please sign in to submit a review.
