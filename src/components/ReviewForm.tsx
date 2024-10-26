@@ -122,7 +122,7 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-6 bg-pastel-light p-6 rounded-lg shadow-lg max-w-lg mx-auto"
+      className="space-y-6 bg-pastel-light p-6 rounded-lg shadow-lg max-w-lg mx-auto mt-10"
     >
       <h2 className="text-2xl font-bold text-pastel-dark text-center">
         Add a Review
