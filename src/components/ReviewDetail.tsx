@@ -71,6 +71,20 @@ const ReviewDetail: React.FC = () => {
     setNewComment("");
   };
 
+  const formatDate = (date: Date) => {
+    return (
+      new Intl.DateTimeFormat("id-ID", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hourCycle: "h23",
+        timeZone: "Asia/Jakarta",
+      }).format(date) + " WIB"
+    );
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -109,7 +123,7 @@ const ReviewDetail: React.FC = () => {
                 <p className="font-semibold">{comment.username}</p>
                 <p className="text-gray-700">{comment.text}</p>
                 <p className="text-gray-500 text-sm">
-                  {comment.createdAt.toString()}
+                  {formatDate(comment.createdAt)}
                 </p>
               </li>
             ))}
