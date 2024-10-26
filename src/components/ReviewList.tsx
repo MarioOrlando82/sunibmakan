@@ -35,6 +35,10 @@ const ReviewList: React.FC = () => {
   };
 
   const handleDelete = async (id: string) => {
+    if (!window.confirm("Are you sure you want to delete this review?")) {
+      return;
+    }
+
     if (
       currentUser &&
       currentUser.uid === reviews.find((r) => r.id === id)?.userId
@@ -264,7 +268,7 @@ const ReviewList: React.FC = () => {
                   <>
                     <button
                       onClick={() => handleEdit(review)}
-                      className="mt-2 bg-pastel-primary text-white px-4 py-2 rounded hover:bg-pastel-accent transition-colors w-full"
+                      className="mt-4 bg-pastel-primary text-white px-4 py-2 rounded hover:bg-pastel-accent transition-colors w-full"
                     >
                       Edit
                     </button>
@@ -282,24 +286,25 @@ const ReviewList: React.FC = () => {
         </div>
       )}
 
-      {/* Pagination Controls */}
-      <div className="flex justify-center mt-4">
-        {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-          (page) => (
-            <button
-              key={page}
-              onClick={() => paginate(page)}
-              className={`mx-1 px-3 py-1 rounded ${
-                page === currentPage
-                  ? "bg-pastel-primary text-white"
-                  : "bg-gray-300 text-black"
-              }`}
-            >
-              {page}
-            </button>
-          )
-        )}
-      </div>
+      {!editingReview && (
+        <div className="flex justify-center mt-4">
+          {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+            (page) => (
+              <button
+                key={page}
+                onClick={() => paginate(page)}
+                className={`mx-1 px-3 py-1 rounded ${
+                  page === currentPage
+                    ? "bg-pastel-primary text-white"
+                    : "bg-gray-300 text-black"
+                }`}
+              >
+                {page}
+              </button>
+            )
+          )}
+        </div>
+      )}
     </div>
   );
 };
