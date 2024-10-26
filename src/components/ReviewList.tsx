@@ -255,7 +255,7 @@ const ReviewList: React.FC = () => {
 
                 <Link
                   to={`/review/${review.id}`}
-                  className="mt-2 bg-pastel-primary text-white px-4 py-2 rounded hover:bg-pastel-accent transition-colors w-full text-center"
+                  className="mt-2 mb-2 bg-pastel-primary text-white px-4 py-2 rounded hover:bg-pastel-accent transition-colors w-full text-center"
                 >
                   Detail
                 </Link>
