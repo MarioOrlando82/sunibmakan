@@ -145,7 +145,7 @@ const ReviewDetail: React.FC = () => {
                 <p className="font-semibold text-pastel-primary">
                   {comment.username}
                 </p>
-                <p className="text-pastel-dark mt-2">{comment.text}</p>
+                <p className="text-pastel-dark mt-2 break-words">{comment.text}</p>
                 <p className="text-pastel-accent text-xs mt-1">
                   {formatDate(comment.createdAt)}
                 </p>
