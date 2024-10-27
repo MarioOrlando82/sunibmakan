@@ -92,7 +92,7 @@ const ReviewDetail: React.FC = () => {
 
   return (
     <div className="container mx-auto mt-8">
-      <h2 className="text-2xl font-bold mb-4">{review.name}</h2>
+      <h2 className="text-2xl font-bold mb-4 text-pastel-dark">{review.name}</h2>
       {review.restaurantImage && (
         <div>
           <img
