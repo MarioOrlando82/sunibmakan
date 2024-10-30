@@ -9,14 +9,8 @@ interface EditReviewProps {
   onCancel: () => void;
 }
 
-const EditReview: React.FC<EditReviewProps> = ({
-  review,
-  onSave,
-  onCancel,
-}) => {
-  const [formData, setFormData] = useState<
-    Omit<Review, "id" | "userId" | "reviewerName">
-  >({
+const EditReview: React.FC<EditReviewProps> = ({ review, onSave, onCancel }) => {
+  const [formData, setFormData] = useState<Omit<Review, "id" | "userId" | "reviewerName">>({
     name: "",
     address: "",
     description: "",
@@ -48,9 +42,7 @@ const EditReview: React.FC<EditReviewProps> = ({
     });
   }, [review]);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -58,10 +50,7 @@ const EditReview: React.FC<EditReviewProps> = ({
     }));
   };
 
-  const handleImageUpload = async (
-    e: React.ChangeEvent<HTMLInputElement>,
-    imageType: "restaurantImage" | "menuImage"
-  ) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, imageType: "restaurantImage" | "menuImage") => {
     const file = e.target.files?.[0];
     if (file) {
       const path = `images/${imageType}/${file.name}`;
@@ -92,86 +81,71 @@ const EditReview: React.FC<EditReviewProps> = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+      className="space-y-6 bg-pastel-light p-6 rounded-lg shadow-lg max-w-lg mx-auto mt-10"
     >
-      <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="name"
-        >
+      <h2 className="text-2xl font-bold text-pastel-dark text-center">Edit Review</h2>
+      <div>
+        <label htmlFor="name" className="block text-sm font-medium text-pastel-dark">
           Restaurant Name
         </label>
         <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="name"
           type="text"
+          id="name"
           name="name"
           value={formData.name}
           onChange={handleChange}
           required
+          className="mt-1 block w-full rounded-md border-pastel-primary bg-pastel-lightDark shadow-sm focus:border-pastel-accent focus:ring focus:ring-pastel-accent focus:ring-opacity-50"
         />
       </div>
-      <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="address"
-        >
+      <div>
+        <label htmlFor="address" className="block text-sm font-medium text-pastel-dark">
           Address
         </label>
         <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="address"
           type="text"
+          id="address"
           name="address"
           value={formData.address}
           onChange={handleChange}
           required
+          className="mt-1 block w-full rounded-md border-pastel-primary bg-pastel-lightDark shadow-sm focus:border-pastel-accent focus:ring focus:ring-pastel-accent focus:ring-opacity-50"
         />
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="description"
-          >
-            Phone Number
-          </label>
-          <textarea
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="phoneNumber"
-            name="phoneNumber"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-            required
-          />
-        </div>
       </div>
-      <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="description"
-        >
+      <div>
+        <label htmlFor="phoneNumber" className="block text-sm font-medium text-pastel-dark">
+          Phone Number
+        </label>
+        <input
+          type="text"
+          id="phoneNumber"
+          name="phoneNumber"
+          value={formData.phoneNumber}
+          onChange={handleChange}
+          required
+          className="mt-1 block w-full rounded-md border-pastel-primary bg-pastel-lightDark shadow-sm focus:border-pastel-accent focus:ring focus:ring-pastel-accent focus:ring-opacity-50"
+        />
+      </div>
+      <div>
+        <label htmlFor="description" className="block text-sm font-medium text-pastel-dark">
           Description
         </label>
         <textarea
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           id="description"
           name="description"
           value={formData.description}
           onChange={handleChange}
           required
+          className="mt-1 block w-full rounded-md border-pastel-primary bg-pastel-lightDark shadow-sm focus:border-pastel-accent focus:ring focus:ring-pastel-accent focus:ring-opacity-50"
         />
       </div>
-
-      <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="rating"
-        >
+      <div>
+        <label htmlFor="rating" className="block text-sm font-medium text-pastel-dark">
           Rating
         </label>
         <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="rating"
           type="number"
+          id="rating"
           name="rating"
           min="0"
           max="5"
@@ -179,63 +153,64 @@ const EditReview: React.FC<EditReviewProps> = ({
           value={formData.rating}
           onChange={handleChange}
           required
+          className="mt-1 block w-full rounded-md border-pastel-primary bg-pastel-lightDark shadow-sm focus:border-pastel-accent focus:ring focus:ring-pastel-accent focus:ring-opacity-50"
         />
       </div>
-      <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="restaurantImage"
-        >
+      <div>
+        <label htmlFor="restaurantImage" className="block text-sm font-medium text-pastel-dark">
           Restaurant Image
         </label>
         <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="restaurantImage"
           type="file"
+          id="restaurantImage"
           accept="image/*"
           onChange={(e) => handleImageUpload(e, "restaurantImage")}
+          className="hidden" // Hide the original input
         />
+        <label
+          htmlFor="restaurantImage"
+          className="mt-1 inline-block cursor-pointer bg-pastel-primary text-white font-semibold py-2 px-4 rounded-lg hover:bg-pastel-accent transition-colors"
+        >
+          Choose File
+        </label>
         {formData.restaurantImage && (
-          <img
-            src={formData.restaurantImage}
-            alt="Restaurant"
-            className="mt-2 w-full h-48 object-cover"
-          />
+          <img src={formData.restaurantImage} alt="Restaurant" className="mt-2 w-full h-48 object-cover" />
         )}
       </div>
-      <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="menuImage"
-        >
+      <div>
+        <label htmlFor="menuImage" className="block text-sm font-medium text-pastel-dark">
           Menu Image
         </label>
         <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="menuImage"
           type="file"
+          id="menuImage"
           accept="image/*"
           onChange={(e) => handleImageUpload(e, "menuImage")}
+          className="hidden" // Hide the original input
         />
+        <label
+          htmlFor="menuImage"
+          className="mt-1 inline-block cursor-pointer bg-pastel-primary text-white font-semibold py-2 px-4 rounded-lg hover:bg-pastel-accent transition-colors"
+        >
+          Choose File
+        </label>
         {formData.menuImage && (
-          <img
-            src={formData.menuImage}
-            alt="Menu"
-            className="mt-2 w-full h-48 object-cover"
-          />
+          <img src={formData.menuImage} alt="Menu" className="mt-2 w-full h-48 object-cover" />
         )}
       </div>
+
+      {/* Save and Cancel buttons */}
       <div className="flex items-center justify-between">
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="submit"
+          className="bg-pastel-primary hover:bg-pastel-accent text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
           Save Changes
         </button>
         <button
-          className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="button"
           onClick={onCancel}
+          className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
           Cancel
         </button>
