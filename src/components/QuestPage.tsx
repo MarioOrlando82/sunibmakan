@@ -54,24 +54,26 @@ const QuestPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Quest Page</h1>
+    <div className="p-6 bg-pastel-light min-h-screen">
+      <h1 className="text-3xl font-bold mb-6 text-pastel-dark">Do Quest and Earn Points!</h1>
 
-      <div className="mb-4">
-        <h2 className="text-xl font-semibold">Your Points: {points}</h2>
+
+      {/* Display User Points */}
+      <div className="mb-6 bg-pastel-primary p-4 rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold text-white">Your Points: {points}</h2>
       </div>
 
       <div>
-        <h2 className="text-xl font-semibold mb-2">Quests</h2>
-        <ul className="space-y-2">
+        <h2 className="text-2xl font-semibold mb-4 text-pastel-dark">Daily Quests</h2>
+        <ul className="space-y-4">
           {quests.map((quest, index) => (
             <li
               key={index}
-              className="border p-2 rounded-lg shadow-md bg-white"
+              className="border border-pastel-lightDark p-4 rounded-lg shadow-sm bg-white transition-all transform hover:-translate-y-1"
             >
-              <h3 className="font-bold text-lg">{quest.title}</h3>
-              <p>{quest.description}</p>
-              <p className="text-green-500">Reward: {quest.points} points</p>
+              <h3 className="font-bold text-lg text-pastel-primary">{quest.title}</h3>
+              <p className="text-pastel-dark">{quest.description}</p>
+              <p className="text-pastel-accent font-medium">Reward: {quest.points} points</p>
             </li>
           ))}
         </ul>

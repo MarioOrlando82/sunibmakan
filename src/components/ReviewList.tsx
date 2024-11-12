@@ -164,7 +164,7 @@ const ReviewList: React.FC = () => {
     <div className="container mx-auto mt-8">
       {!editingReview && (
         <>
-          <h2 className="text-2xl font-bold mb-4">Review List</h2>
+          <h2 className="text-2xl font-bold mb-4 text-pastel-dark">Review List</h2>
           <input
             type="text"
             placeholder="Search reviews by name"
@@ -210,7 +210,7 @@ const ReviewList: React.FC = () => {
                 />
               )}
               <div className="p-4">
-                <h3 className="text-xl font-semibold mb-2">{review.name}</h3>
+                <h3 className="text-xl font-semibold mb-2 text-pastel-dark">{review.name}</h3>
                 <p className="text-gray-600 mb-2">{review.address}</p>
                 <p className="text-gray-600 mb-2">{review.phoneNumber}</p>
                 <p className="text-sm text-gray-500 mb-2">

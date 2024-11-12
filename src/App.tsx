@@ -154,7 +154,7 @@ const App: React.FC = () => {
                   <Link
                     to="/"
                     onClick={toggleNav}
-                    className="text-black font-semibold text-lg hover:text-pastel-primary"
+                    className="text-pastel-dark font-semibold text-lg hover:text-pastel-primary"
                   >
                     Review List
                   </Link>
@@ -163,7 +163,7 @@ const App: React.FC = () => {
                   <Link
                     to="/add"
                     onClick={toggleNav}
-                    className="text-black font-semibold text-lg hover:text-pastel-primary"
+                    className="text-pastel-dark font-semibold text-lg hover:text-pastel-primary"
                   >
                     Add Review
                   </Link>
@@ -172,7 +172,7 @@ const App: React.FC = () => {
                   <Link
                     to="/roulette"
                     onClick={toggleNav}
-                    className="text-black font-semibold text-lg hover:text-pastel-primary"
+                    className="text-pastel-dark font-semibold text-lg hover:text-pastel-primary"
                   >
                     Roulette
                   </Link>
@@ -181,7 +181,7 @@ const App: React.FC = () => {
                   <Link
                     to="/leaderboard"
                     onClick={toggleNav}
-                    className="text-black font-semibold text-lg hover:text-pastel-primary"
+                    className="text-pastel-dark font-semibold text-lg hover:text-pastel-primary"
                   >
                     Leaderboard
                   </Link>
@@ -190,7 +190,7 @@ const App: React.FC = () => {
                   <Link
                     to="/quest"
                     onClick={toggleNav}
-                    className="text-black font-semibold text-lg hover:text-pastel-primary"
+                    className="text-pastel-dark font-semibold text-lg hover:text-pastel-primary"
                   >
                     Quest
                   </Link>
