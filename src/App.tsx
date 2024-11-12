@@ -28,7 +28,7 @@ const App: React.FC = () => {
           <div className="container mx-auto pb-6 px-6 bg-pastel-light min-h-screen">
             <a href="/">
               <img
-                src="../public/assets/sunibmakan.png"
+                src="../public/assets/images/sunibmakan.png"
                 alt="SunibMakan"
                 className="mx-auto h-32 w-32 object-contain"
               />
