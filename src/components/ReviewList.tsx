@@ -15,7 +15,7 @@ const ReviewList: React.FC = () => {
   const [editingReview, setEditingReview] = useState<Review | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [filterOption, setFilterOption] = useState<string>("all");
+  const [filterOption, setFilterOption] = useState<string>("recent");
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const reviewsPerPage = 6;
@@ -145,8 +145,6 @@ const ReviewList: React.FC = () => {
         return (
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
-      } else if (filterOption === "all") {
-        return a.name.localeCompare(b.name);
       }
       return 0;
     });
@@ -179,8 +177,8 @@ const ReviewList: React.FC = () => {
             onChange={(e) => setFilterOption(e.target.value)}
             className="border border-gray-300 rounded p-2 mb-4 shadow-sm"
           >
-            <option value="all">All Reviews</option>
             <option value="recent">Most Recent</option>
+            <option value="all">All Reviews</option>
             <option value="most-liked">Most Liked</option>
             <option value="least-liked">Least Liked</option>
             <option value="last-24-hours">Last 24 Hours</option>

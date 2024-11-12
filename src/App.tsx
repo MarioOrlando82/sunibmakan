@@ -25,11 +25,14 @@ const App: React.FC = () => {
     <div className="bg-pastel-light min-h-screen">
       <Router>
         <ErrorBoundary>
-          <div className="container mx-auto p-6 bg-pastel-light min-h-screen">
-            <h1 className="text-4xl font-bold text-pastel-dark mb-10 text-center">
-              SunibMakan
-            </h1>
-
+          <div className="container mx-auto pb-6 px-6 bg-pastel-light min-h-screen">
+            <a href="/">
+              <img
+                src="../src/icons/sunibmakan.png"
+                alt="SunibMakan"
+                className="mx-auto h-32 w-32 object-contain"
+              />
+            </a>
             <nav className="flex justify-between items-center bg-pastel-lightDark p-4 rounded-lg shadow-md">
               <div>
                 {user && (

@@ -63,7 +63,7 @@ const ReviewDetail: React.FC = () => {
       userId: auth.currentUser.uid,
       username: auth.currentUser.displayName || "Anonymous",
       text: newComment,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
     };
 
     await addComment(newCommentData);
@@ -71,7 +71,8 @@ const ReviewDetail: React.FC = () => {
     setNewComment("");
   };
 
-  const formatDate = (date: Date) => {
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
     return (
       new Intl.DateTimeFormat("id-ID", {
         day: "numeric",
@@ -113,6 +114,15 @@ const ReviewDetail: React.FC = () => {
       <p className="text-sm text-gray-600 mb-2">
         Reviewed by: {review.reviewerName || "Anonymous"}
       </p>
+
+      {review.menuImage && (
+        <button
+          onClick={() => window.open(review.menuImage, "_blank")}
+          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors mb-4"
+        >
+          View Menu
+        </button>
+      )}
 
       <div className="mt-8">
         <h3 className="text-xl font-bold mb-4">Comments</h3>

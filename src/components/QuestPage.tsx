@@ -22,6 +22,16 @@ const QuestPage: React.FC = () => {
       description: "Dislike 10 restaurant reviews to earn +2 points.",
       points: 2,
     },
+    {
+      title: "Leave 5 Comments",
+      description: "Comment on 5 different restaurant reviews to earn +2 points.",
+      points: 2,
+    },
+    {
+      title: "Complete 10 Reviews",
+      description: "Write and submit 10 restaurant reviews to earn +10 points.",
+      points: 10,
+    },
   ]);
 
   const fetchUserPoints = async () => {
@@ -47,12 +57,10 @@ const QuestPage: React.FC = () => {
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Quest Page</h1>
 
-      {/* Display User Points */}
       <div className="mb-4">
         <h2 className="text-xl font-semibold">Your Points: {points}</h2>
       </div>
 
-      {/* List of Quests */}
       <div>
         <h2 className="text-xl font-semibold mb-2">Quests</h2>
         <ul className="space-y-2">

@@ -42,18 +42,17 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
   const handleImageChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     setImage: React.Dispatch<React.SetStateAction<File | null>>,
-    setPreview: React.Dispatch<React.SetStateAction<string | null>>
+    setImagePreview: React.Dispatch<React.SetStateAction<string | null>>
   ) => {
-    const file = e.target.files?.[0] || null;
-    setImage(file);
+    const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setPreview(null);
+      if (file.size > 2024 * 2024) {
+        alert("File size must be less than 1 MB");
+        e.target.value = "";
+        return;
+      }
+      setImage(file);
+      setImagePreview(URL.createObjectURL(file));
     }
   };
 
@@ -155,7 +154,6 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
           id="address"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
-          required
           className="mt-1 block w-full rounded-md border-pastel-primary bg-pastel-lightDark shadow-sm focus:border-pastel-accent focus:ring focus:ring-pastel-accent focus:ring-opacity-50"
         />
       </div>
@@ -164,14 +162,13 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
           htmlFor="phoneNumber"
           className="block text-sm font-medium text-pastel-dark"
         >
-          Phone Number
+          Restaurant Phone Number 
         </label>
         <input
           type="number"
           id="phoneNumber"
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
-          required
           className="mt-1 block w-full rounded-md border-pastel-primary bg-pastel-lightDark shadow-sm focus:border-pastel-accent focus:ring focus:ring-pastel-accent focus:ring-opacity-50"
         />
       </div>
@@ -180,7 +177,7 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
           htmlFor="description"
           className="block text-sm font-medium text-pastel-dark"
         >
-          Description
+          Review
         </label>
         <textarea
           id="description"
@@ -217,7 +214,7 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
           htmlFor="restaurantImage"
           className="block text-sm font-medium text-pastel-dark"
         >
-          Restaurant Image
+          Restaurant Image Max 1 mb
         </label>
         <input
           type="file"
@@ -248,7 +245,7 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
           htmlFor="menuImage"
           className="block text-sm font-medium text-pastel-dark"
         >
-          Menu Image
+          Menu Image Max 1 mb
         </label>
         <input
           type="file"

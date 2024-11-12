@@ -1,8 +1,8 @@
 export interface Comment {
   id: string;
-  reviewId: string; 
+  reviewId: string;
   userId: string;
-  username: string; 
+  username: string;
   text: string;
-  createdAt: Date;
+  createdAt: string;
 }
