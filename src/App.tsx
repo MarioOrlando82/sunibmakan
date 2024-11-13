@@ -10,6 +10,7 @@ import RoulettePage from "./components/RoulettePage";
 import ReviewDetail from "./components/ReviewDetail";
 import Leaderboard from "./components/Leaderboard";
 import QuestPage from "./components/QuestPage";
+import AboutPage from "./components/AboutPage";
 
 const App: React.FC = () => {
   const [user] = useAuthState(auth);
@@ -79,6 +80,14 @@ const App: React.FC = () => {
                     className="text-pastel-primary font-semibold hover:text-pastel-dark"
                   >
                     Quest
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/about"
+                    className="text-pastel-primary font-semibold hover:text-pastel-dark"
+                  >
+                    About
                   </Link>
                 </li>
               </ul>
@@ -193,6 +202,15 @@ const App: React.FC = () => {
                     Quest
                   </Link>
                 </li>
+                <li>
+                  <Link
+                    to="/about"
+                    onClick={toggleNav}
+                    className="text-pastel-dark font-semibold text-lg hover:text-pastel-primary"
+                  >
+                    About
+                  </Link>
+                </li>
               </ul>
 
               <div className="p-6">
@@ -224,6 +242,7 @@ const App: React.FC = () => {
               <Route path="/review/:id" element={<ReviewDetail />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
               <Route path="/quest" element={<QuestPage />} />
+              <Route path="/about" element={<AboutPage />} />
             </Routes>
           </div>
         </ErrorBoundary>
