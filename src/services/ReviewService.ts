@@ -55,7 +55,7 @@ export const addReview = async (
 
 export const updateReview = async (
   id: string,
-  review: Omit<Review, "id">
+  review: Partial<Omit<Review, "id">>
 ): Promise<void> => {
   const auth = getAuth();
   const user = auth.currentUser;

@@ -46,7 +46,7 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
   ) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 2024 * 2024) {
+      if (file.size > 1 * 1024 * 1024) {
         alert("File size must be less than 1 MB");
         e.target.value = "";
         return;
@@ -63,52 +63,52 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
       return;
     }
     setIsSubmitting(true);
-
-    const reviewData: Omit<Review, "id"> = {
-      name,
-      address,
-      description,
-      rating,
-      reviewerName: user.displayName || "Anonymous",
-      userId: user.uid,
-      restaurantImage: restaurantImagePreview || "",
-      menuImage: menuImagePreview || "",
-      likedBy: [],
-      dislikedBy: [],
-      likes: 0,
-      dislikes: 0,
-      phoneNumber,
-      createdAt: new Date().toISOString(),
-    };
-
+  
     try {
+      let restaurantImageUrl = restaurantImagePreview || "";
+      let menuImageUrl = menuImagePreview || "";
+  
+      const reviewData: Omit<Review, "id"> = {
+        name,
+        address,
+        description,
+        rating,
+        reviewerName: user.displayName || "Anonymous",
+        userId: user.uid,
+        restaurantImage: restaurantImageUrl,
+        menuImage: menuImageUrl,
+        likedBy: [],
+        dislikedBy: [],
+        likes: 0,
+        dislikes: 0,
+        phoneNumber,
+        createdAt: new Date().toISOString(),
+      };
+  
       let id = review?.id;
-
+  
       if (id) {
         await updateReview(id, reviewData);
       } else {
         id = await addReview(reviewData);
       }
-
+  
       if (restaurantImage) {
-        const restaurantImageUrl = await uploadImage(
+        restaurantImageUrl = await uploadImage(
           restaurantImage,
           `restaurants/${id}/restaurant-image`
         );
-        await updateReview(id, {
-          ...reviewData,
-          restaurantImage: restaurantImageUrl,
-        });
+        await updateReview(id, { restaurantImage: restaurantImageUrl });
       }
-
+  
       if (menuImage) {
-        const menuImageUrl = await uploadImage(
+        menuImageUrl = await uploadImage(
           menuImage,
           `restaurants/${id}/menu-image`
         );
-        await updateReview(id, { ...reviewData, menuImage: menuImageUrl });
+        await updateReview(id, { menuImage: menuImageUrl });
       }
-
+  
       onSubmit();
       navigate("/");
     } catch (error) {
@@ -117,7 +117,7 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
       setIsSubmitting(false);
     }
   };
-
+  
   return (
     <form
       onSubmit={handleSubmit}
@@ -162,7 +162,7 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
           htmlFor="phoneNumber"
           className="block text-sm font-medium text-pastel-dark"
         >
-          Restaurant Phone Number 
+          Restaurant Phone Number
         </label>
         <input
           type="number"
@@ -214,7 +214,7 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
           htmlFor="restaurantImage"
           className="block text-sm font-medium text-pastel-dark"
         >
-          Restaurant Image Max 1 mb
+          Restaurant Image Max 1 MB
         </label>
         <input
           type="file"
@@ -245,7 +245,7 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
           htmlFor="menuImage"
           className="block text-sm font-medium text-pastel-dark"
         >
-          Menu Image Max 1 mb
+          Menu Image Max 1 MB
         </label>
         <input
           type="file"
@@ -274,16 +274,11 @@ const ReviewForm: React.FC<Props> = ({ review, onSubmit }) => {
         <button
           type="submit"
           className="bg-pastel-primary text-white px-4 py-2 rounded-lg hover:bg-pastel-accent transition-colors disabled:opacity-50"
-          disabled={isSubmitting || !user}
+          disabled={isSubmitting}
         >
-          {isSubmitting ? "Submitting..." : review ? "Update" : "Add"} Review
+          {isSubmitting ? "Submitting..." : "Submit Review"}
         </button>
       </div>
-      {!user && (
-        <p className="text-red-500 text-sm mt-2">
-          Please sign in to submit a review.
-        </p>
-      )}
     </form>
   );
 };
