@@ -8,7 +8,7 @@ const AboutPage = () => {
         <h1 className="text-4xl font-bold text-pastel-dark mb-4">About Us</h1>
         <div className="mb-6">
           <img
-            src="public/static/sunibmakan.png"
+            src="public/static/sunibmakan.jpg"
             alt="Logo"
             className="mx-auto h-32 w-32 object-contain mb-4"
           />
